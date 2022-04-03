@@ -5,10 +5,6 @@ import 'package:wakelock/wakelock.dart';
 import 'chart.dart';
 
 class HomePage extends StatefulWidget {
-  // final CameraDescription? camera;
-
-  // const HomePage({Key? key, @required this.camera}) : super(key: key);
-
   @override
   HomePageView createState() => HomePageView();
 }
@@ -18,7 +14,7 @@ class HomePageView extends State<HomePage> {
   bool _processing = false;
   List<SensorValue> _data = [];
   // TODO: 初期化を成功させる
-  late CameraController _controller; // デバイスのカメラを制御するコントローラ
+  CameraController _controller; // デバイスのカメラを制御するコントローラ
   double _alpha = 0.3;
   int _bpm = 0;
 
