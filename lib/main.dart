@@ -3,7 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:photoplethysmogram/homepage.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  // runAppが実行される前に、cameraプラグインを初期化。
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override

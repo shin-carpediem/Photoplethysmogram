@@ -5,17 +5,20 @@ import 'package:wakelock/wakelock.dart';
 import 'chart.dart';
 
 class HomePage extends StatefulWidget {
+  // final CameraDescription? camera;
+
+  // const HomePage({Key? key, @required this.camera}) : super(key: key);
+
   @override
-  HomePageView createState() {
-    return HomePageView();
-  }
+  HomePageView createState() => HomePageView();
 }
 
 class HomePageView extends State<HomePage> {
   bool _toggled = false;
   bool _processing = false;
   List<SensorValue> _data = [];
-  CameraController _controller;
+  // TODO: 初期化を成功させる
+  late CameraController _controller; // デバイスのカメラを制御するコントローラ
   double _alpha = 0.3;
   int _bpm = 0;
 
@@ -43,14 +46,25 @@ class HomePageView extends State<HomePage> {
 
   Future<void> _initController() async {
     try {
+      // デバイスで使用可能なカメラの一覧を取得。
       List _cameras = await availableCameras();
-      _controller = CameraController(_cameras.first, ResolutionPreset.low);
+      _controller = CameraController(
+        _cameras.first, // 利用可能なカメラの一覧から、指定のカメラを取得。
+        // 使用する解像度を設定
+        // low : 352x288 on iOS, 240p (320x240) on Android
+        // medium : 480p (640x480 on iOS, 720x480 on Android)
+        // high : 720p (1280x720)
+        // veryHigh : 1080p (1920x1080)
+        // ultraHigh : 2160p (3840x2160)
+        ResolutionPreset.low, // low : 利用可能な最小の解像度
+      );
+      // コントローラーに設定されたカメラを初期化。
       await _controller.initialize();
-      // カメラのフラッシュをアクティブにしてから、ImageStreamを開始する。
+      // カメラのフラッシュをアクティブにしてから、ImageStreamを開始。
       Future.delayed(Duration(microseconds: 500)).then((onValue) {
-        _controller.flash(true);
+        // _controller.flash(true);
       });
-      _controller.startImageStream((CaremaImage image) {
+      _controller.startImageStream((CameraImage image) {
         if (!_processing) {
           setState(() {
             _processing = true;
@@ -131,11 +145,12 @@ class HomePageView extends State<HomePage> {
 
   _disposeController() {
     _controller.dispose();
-    _controller = null;
+    // _controller = null;
   }
 
   @override
   void dispose() {
+    // ウィジェットが破棄されたタイミングで、カメラのコントローラを破棄。
     _disposeController();
     super.dispose();
   }
