@@ -1,6 +1,7 @@
 // ignore_for_file: use_key_in_widget_constructors, prefer_final_fields, prefer_const_constructors
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:photoplethysmogram/main.dart';
 import 'package:wakelock/wakelock.dart';
 import 'chart.dart';
 
@@ -13,8 +14,16 @@ class HomePageView extends State<HomePage> {
   bool _toggled = false;
   bool _processing = false;
   List<SensorValue> _data = [];
-  // TODO: 初期化を成功させる
-  CameraController _controller; // デバイスのカメラを制御するコントローラ
+  CameraController _controller = CameraController(
+    cameras.first, // 利用可能なカメラの一覧から、指定のカメラを取得。
+    // 使用する解像度を設定
+    // low : 352x288 on iOS, 240p (320x240) on Android
+    // medium : 480p (640x480 on iOS, 720x480 on Android)
+    // high : 720p (1280x720)
+    // veryHigh : 1080p (1920x1080)
+    // ultraHigh : 2160p (3840x2160)
+    ResolutionPreset.low, // low : 利用可能な最小の解像度
+  ); // デバイスのカメラを制御するコントローラ
   double _alpha = 0.3;
   int _bpm = 0;
 
@@ -42,18 +51,6 @@ class HomePageView extends State<HomePage> {
 
   Future<void> _initController() async {
     try {
-      // デバイスで使用可能なカメラの一覧を取得。
-      List _cameras = await availableCameras();
-      _controller = CameraController(
-        _cameras.first, // 利用可能なカメラの一覧から、指定のカメラを取得。
-        // 使用する解像度を設定
-        // low : 352x288 on iOS, 240p (320x240) on Android
-        // medium : 480p (640x480 on iOS, 720x480 on Android)
-        // high : 720p (1280x720)
-        // veryHigh : 1080p (1920x1080)
-        // ultraHigh : 2160p (3840x2160)
-        ResolutionPreset.low, // low : 利用可能な最小の解像度
-      );
       // コントローラーに設定されたカメラを初期化。
       await _controller.initialize();
       // カメラのフラッシュをアクティブにしてから、ImageStreamを開始。
@@ -161,13 +158,13 @@ class HomePageView extends State<HomePage> {
             Expanded(
               child: Row(
                 children: <Widget>[
-                  Expanded(
-                    child: Center(
-                      child: _controller == null
-                          ? Container()
-                          : CameraPreview(_controller),
-                    ),
-                  ),
+                  // Expanded(
+                  //   child: Center(
+                  //     child: _controller == null
+                  //         ? Container()
+                  //         : CameraPreview(_controller),
+                  //   ),
+                  // ),
                   Expanded(
                     child: Center(
                       child: Text(
