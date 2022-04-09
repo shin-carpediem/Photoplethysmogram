@@ -158,13 +158,13 @@ class HomePageView extends State<HomePage> {
             Expanded(
               child: Row(
                 children: <Widget>[
-                  // Expanded(
-                  //   child: Center(
-                  //     child: _controller == null
-                  //         ? Container()
-                  //         : CameraPreview(_controller),
-                  //   ),
-                  // ),
+                  Expanded(
+                    child: Center(
+                      child: _controller == null
+                          ? Container()
+                          : CameraPreview(_controller),
+                    ),
+                  ),
                   Expanded(
                     child: Center(
                       child: Text(
